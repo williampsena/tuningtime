@@ -4,6 +4,13 @@ A simple app based on Pomodoro Technique
 
 https://en.wikipedia.org/wiki/Pomodoro_Technique
 
+## Preview
+
+![Started Task Window](/preview/started.png)
+
+![Stopped Task Window](/preview/stopped.png)
+
+![Stopped Task Window](/preview/waiting.png)
 ## Install
 
 Sorry, TODO!
