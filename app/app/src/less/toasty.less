@@ -1,0 +1,43 @@
+body{
+  &.toasty {
+    -webkit-app-region: no-drag;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+    overflow: hidden;
+
+    .main-container {
+      padding: 0;
+      margin: 0;
+      width: 70%;
+      height: 70%;
+    }
+    
+    &.start{
+      margin: 5% 0 5% 0;
+      background-color: #4a148c;
+      
+      img {
+        width: 80%;
+        height: 80%;
+        -webkit-animation-duration: 1s;
+        -webkit-animation-delay: 0.2s;
+        -webkit-animation-iteration-count: 1;
+        -webkit-filter: blur(0px);
+      }
+    }
+    
+    &.wait{
+      margin: 22% 0 0 0;
+      background: #795548;
+      
+      img {
+        width: 50%;
+        height: 50%;
+        -webkit-animation-duration: 3s;
+        -webkit-animation-delay: 0.2s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-filter: blur(0px);
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "tuning-time",
+  "description": "Improve your time",
+  "main": "main.js",
+  "authors": [
+    "williampsena <william@coisadeprogramador.com.br>"
+  ],
+  "license": "MIT",
+  "homepage": "https://www.coisadeprogramador.com.br",
+  "moduleType": [
+    "amd"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "animate.css": "^3.5.1",
+    "Chart.js": "^2.1.4"
+  }
+}
