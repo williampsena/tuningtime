@@ -1,14 +1,17 @@
 {"_id":"0hWC8FZ8kLC9WkcF","timer":60,"createAt":{"$$date":1472435366490},"modified":{"$$date":1472435430777}}
 {"_id":"0puHoPgrS0vTtHET","timer":60,"createAt":{"$$date":1472524120835},"modified":{"$$date":1472524193102}}
+{"_id":"4z7kUzDKBQZAYxgk","timer":60,"createAt":{"$$date":1473036361683},"modified":{"$$date":1473036423251}}
 {"_id":"9i1oJhjAaKt85e4k","timer":60,"createAt":{"$$date":1472524501245},"modified":{"$$date":1472524562765}}
 {"_id":"BtWtbmwR52M6Qr53","timer":9,"createAt":{"$$date":1472523007607},"modified":{"$$date":1472523026130}}
 {"_id":"Ld91TZwxdgtGmYOZ","task":{"_id":"Ck02tTArPSGZjlw3","name":"Teste","createAt":"2016-08-29T01:15:51.318Z","modified":null,"started":false,"completed":false},"timer":60,"createAt":{"$$date":1472521906751},"modified":{"$$date":1472521968750}}
 {"_id":"NCDz4pJxRTAozdFt","timer":4,"createAt":{"$$date":1471912645574},"modified":{"$$date":1471912652514}}
 {"_id":"Nj4utA3pgTVOjKcx","timer":60,"createAt":{"$$date":1472436065107},"modified":{"$$date":1472436126720}}
+{"_id":"Nt1GXJyOG58rD8JS","task":{"_id":"Ck02tTArPSGZjlw3","name":"Teste","createAt":{"$$date":1472433351318},"modified":null,"started":false,"completed":false},"timer":13,"createAt":{"$$date":1473038351964},"modified":{"$$date":1473038367967}}
 {"_id":"R6ChMzpcPBR7oDde","timer":60,"createAt":{"$$date":1472519340991},"modified":{"$$date":1472519403751}}
 {"_id":"SJg0RsQBy1g3t6mG","task":{"_id":"Ck02tTArPSGZjlw3","name":"Teste","createAt":{"$$date":1472433351318},"modified":null,"started":false,"completed":false},"timer":60,"createAt":{"$$date":1472520006214},"modified":{"$$date":1472520067751}}
 {"_id":"SWtTbcGLUPjC6yxZ","task":{"_id":"Ck02tTArPSGZjlw3","name":"Teste","createAt":"2016-08-29T01:15:51.318Z","modified":null,"started":false,"completed":false},"timer":60,"createAt":{"$$date":1472434990351},"modified":{"$$date":1472435051750}}
 {"_id":"T1sfS2Vn8JBonXG8","task":{"_id":"Ck02tTArPSGZjlw3","name":"Teste","createAt":"2016-08-29T01:15:51.318Z","modified":null,"started":false,"completed":false},"timer":60,"createAt":{"$$date":1472436617583},"modified":{"$$date":1472436678753}}
+{"_id":"TOqCrlecv5C73t6Y","timer":14,"createAt":{"$$date":1473036811634},"modified":{"$$date":1473036827655}}
 {"_id":"UdVmcdqRaEX4Kcg6","timer":60,"createAt":{"$$date":1472520571804},"modified":{"$$date":1472520636722}}
 {"_id":"XMsHoSg2Q5LTDgfV","task":{"_id":"uPFmdJPtETSNJ6Rv","name":"Ok","createAt":{"$$date":1471822398243},"modified":null,"started":false,"completed":false},"timer":10,"createAt":{"$$date":1471828657943},"modified":{"$$date":1471828668948}}
 {"_id":"f0gQpEv6NvrJe16B","task":{"_id":"Ck02tTArPSGZjlw3","name":"Teste","createAt":{"$$date":1472433351318},"modified":null,"started":false,"completed":false},"timer":60,"createAt":{"$$date":1472523459192},"modified":{"$$date":1472523520197}}

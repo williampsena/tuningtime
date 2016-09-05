@@ -2,6 +2,9 @@
 const { BrowserWindow, screen: electronScreen } = require('electron').remote;
 const {width, height} = electronScreen.getPrimaryDisplay().size;
 import path from 'path';
+import electron from 'electron';
+
+const {app} = require('electron').remote;
 
 let toastyWindow;
 
@@ -30,7 +33,8 @@ export class Toasty {
         alwaysOnTop: true
       });
       
-      toastyWindow.loadURL(`file://${path.resolve('./dist/main.html')}#/toasty?imageType=${imageType}`);
+      console.log(`file://${app.getAppPath()}/main.html#/toasty?imageType=${imageType}`);
+      toastyWindow.loadURL(`file://${app.getAppPath()}/main.html#/toasty?imageType=${imageType}`);
     }
     
     Toasty.animate(6);

@@ -77,7 +77,7 @@ gulp.task('watch', () => {
 
 gulp.task('build', (callback) => {
   runSequence(
-    'clean:dist',
+    'clean:compile',
     'build-src',
     'build-vendor',
     callback
@@ -125,9 +125,11 @@ gulp.task('watch-src:html', () => {
 });
 
 gulp.task('build-src:js', (callback) => {
-  return gulp.src('./src/main.jsx')
+  return gulp.src('./src/client.jsx')
     .pipe(gulpWebpack(webpackConfig))
-    .pipe(gulp.dest('./dist'));
+    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('./compile'));
 });
 
 gulp.task('build-src:css', () => {
@@ -136,17 +138,17 @@ gulp.task('build-src:css', () => {
     .pipe(less())
     .pipe(rename('main.css'))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('compile'));
 });
 
 gulp.task('build-src:html', () => {
   return gulp.src('src/html/main.html')
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('compile'));
 });
 
 gulp.task('build-src:dist', function () {
-  return gulp.src('src/dist/**/*')
-    .pipe(gulp.dest('dist'));
+  return gulp.src(['src/dist/**/*', 'main.js'])
+    .pipe(gulp.dest('compile'));
 });
 
 gulp.task('build-vendor:js', () => {
@@ -155,7 +157,7 @@ gulp.task('build-vendor:js', () => {
     .pipe(sourcemaps.init())
     .pipe(concat('vendor.js'))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('compile'));
 });
 
 gulp.task('build-vendor:css', () => {
@@ -164,16 +166,16 @@ gulp.task('build-vendor:css', () => {
     .pipe(sourcemaps.init())
     .pipe(concat('vendor.css'))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('compile'));
 });
 
 gulp.task('build-vendor:semantic-ui', () => {
   return gulp.src('semantic/dist/**/*')
-    .pipe(gulp.dest('dist/semantic-ui'));
+    .pipe(gulp.dest('compile/semantic-ui'));
 });
 
-gulp.task('clean:dist', () => {
-  return gulp.src('dist')
+gulp.task('clean:compile', () => {
+  return gulp.src('compile')
     .pipe(clean());
 });
 
@@ -181,7 +183,6 @@ gulp.task('build-electron', (callback) => {
   runSequence(
     'build',
     'build-electron:clean',
-    'build-electron:src',
     callback
     );
 });
@@ -192,11 +193,10 @@ gulp.task('build-electron:clean', () => {
 });
 
 gulp.task('build-electron:src', shell.task([
-  'cp -a node_modules/electron-prebuilt/dist/Electron.app ./',
+  'cp -a node_modules/electron-prebuilt/compile/Electron.app ./',
   'mkdir Electron.app/Contents/Resources/app',
   'cp main.js Electron.app/Contents/Resources/app/',
-  'cp package.json Electron.app/Contents/Resources/app/',
-  'cp -a dist Electron.app/Contents/Resources/app/'
+  'cp package.json Electron.app/Contents/Resources/app/'
 ]));
 
 gulp.task('compile:semantic-ui', (done) => {
@@ -246,3 +246,31 @@ gulp.task('test:mocha', ['test:build'], () => {
     `electron-mocha ${args.join(' ')}`
   ]));
 });
+
+gulp.task('package:test', shell.task([
+  'build --linux --x64 --dir'
+]));
+
+gulp.task('package', (callback) => {
+    runSequence(
+    'build',
+    'package:linux',
+    callback
+    );
+});
+
+gulp.task('package:linux', [], (callback) => {
+    runSequence(
+    'package:linux-x64',
+    'package:linux-ia32',
+    callback
+    );
+});
+
+gulp.task('package:linux-x64', [], shell.task([
+  'build --linux deb tar.xz --x64'
+]));
+
+gulp.task('package:linux-ia32', [], shell.task([
+  'build --linux deb tar.xz --ia32'
+]));

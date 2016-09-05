@@ -13,7 +13,7 @@ module.exports = {
     extensions: ['', '.es6.js', '.js', '.jsx', '.less'],
   },
   entry: {
-    'main': './src/js/main'
+    'client': './src/js/client'
   },
   output: {
     path: '/dist/',

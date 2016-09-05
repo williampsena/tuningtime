@@ -1,11 +1,25 @@
 {
   "name": "tuning-time",
-  "version": "0.0.0",
+  "homepage": "http://www.coisadeprogramador.com.br/",
+  "version": "0.0.1",
   "description": "Improve your time",
   "main": "main.js",
   "scripts": {
-    "dev": "node_modules/electron-prebuilt/cli.js ./ --dev",
+    "dev": "node_modules/electron-prebuilt/cli.js ./compile --dev",
     "test": "mocha --compilers js:babel-core/register ./test/**/*.spec.js"
+  },
+  "build": {
+    "appId": "coisadeprogramador.timetuning",
+    "category": "developer",
+    "productName": "Time Tuning",
+    "win": {
+      "icon": "icons/icon.ico",
+      "iconUrl": "http://www.coisadeprogramador.com.br/content/images/static/time-tuning.png"
+    }
+  },
+  "directories": {
+    "output": "./dist",
+    "app": "./compile"
   },
   "author": "williampsena <william@coisadeprogramador.com.br>",
   "license": "MIT",
@@ -23,7 +37,10 @@
     "babel-preset-stage-0": "^6.5.0",
     "chai": "^3.5.0",
     "css-loader": "^0.23.1",
+    "devtron": "^1.3.0",
+    "electron-builder": "^6.3.2",
     "electron-mocha": "^2.3.0",
+    "electron-packager": "^7.7.0",
     "electron-prebuilt": "^1.2.0",
     "eslint": "^0.23.0",
     "eslint-plugin-react": "^2.5.2",
