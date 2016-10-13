@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from 'components/App';
 import IndexApp from 'components/app/IndexApp';
+import WelcomeApp from 'components/app/WelcomeApp';
 import TimerApp from 'components/app/TimerApp';
 import TaskApp from 'components/app/TaskApp';
 import ToastyApp from 'components/app/ToastyApp';
@@ -12,9 +13,9 @@ import AboutApp from 'components/app/AboutApp';
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={IndexApp} />
-    <Route name="home" path="/" component={IndexApp} />
-    <Route name="timer" path="/timer" component={TimerApp} />]
+    <IndexRoute component={WelcomeApp} />
+    <Route name="index" path="/home" component={IndexApp} />
+    <Route name="timer" path="/timer" component={TimerApp} />
     <Route name="task" path="/task" component={TaskApp} />
     <Route name="toasty" path="/toasty" component={ToastyApp} />
     <Route name="export" path="/export" component={ExportApp} />

@@ -2,8 +2,7 @@ import $ from 'jquery';
 import React from 'react';
 import { Link } from 'react-router';
 import { CurrentLanguage } from '../../config/lang';
-import { SettingStore } from '../../stores/SettingStore';
-import ClearDatabase from '../../stores/ClearDatabase';
+import db from '../../stores/StoreContext';
 
 import SettingModel from '../../models/Setting';
 import MenuBar from './common/MenuBar';
@@ -49,21 +48,21 @@ export default class SettingSite extends BaseSite {
   }
 
   loadSetting() {
-    SettingStore.get().then((setting) => {
-      this.state.fields.interval.value = setting.interval;
-      this.state.fields.wait.value = setting.wait;
+    var setting = db.stores.setting.current();
 
-      this.setState(this.state);
-    });
+    this.state.fields.interval.value = setting.interval;
+    this.state.fields.wait.value = setting.wait;
+
+    this.setState(this.state);
   }
 
   saveSetting() {
-    SettingStore.update(new SettingModel({
-      _id: 1,
-      interval: parseInt(this.state.fields.interval.value),
-      wait: parseInt(this.state.fields.wait.value)
-    })).then(() => {
-      SettingStore.preload();
+    var setting = db.stores.setting.current();
+    
+    setting.interval = parseInt(this.state.fields.interval.value);
+    setting.wait = parseInt(this.state.fields.wait.value);
+
+    db.stores.setting.update(setting).then(() => {
       alert(CurrentLanguage.setting.message.success);
     });
   }
@@ -72,9 +71,8 @@ export default class SettingSite extends BaseSite {
     var clearDbResult = confirm(CurrentLanguage.setting.message.clearDatabaseConfirm);
 
     if (clearDbResult === true) {
-      var clearDatabase = new ClearDatabase();
-
-      clearDatabase.removeAll().then(() => {
+      db.clearDatabase().then(() => {
+        this.loadSetting();
         alert(CurrentLanguage.setting.message.clearDatabase);
         remote.getCurrentWindow().reload();
       });

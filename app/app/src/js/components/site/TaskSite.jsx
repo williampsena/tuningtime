@@ -2,9 +2,7 @@ import $ from 'jquery';
 import React from 'react';
 import { Link } from 'react-router';
 import { CurrentLanguage } from '../../config/lang';
-import { TaskStore } from '../../stores/TaskStore';
-import { TaskLogStore } from '../../stores/TaskLogStore';
-import { SettingStore } from '../../stores/SettingStore';
+import db from '../../stores/StoreContext';
 import TaskModel from '../../models/Task';
 import TaskLogModel from '../../models/TaskLog';
 import TaskList from './timer/TaskList';
@@ -45,12 +43,12 @@ class TaskSite extends BaseSite {
 
   componentWillMount() {
     this.bindBodyClass('task');
+    this.loadCurrentTimer();
   }
 
   componentDidMount() {
     super.componentDidMount();
     this.setTaskStatusStyle();
-    this.loadCurrentTimer();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -289,12 +287,12 @@ class TaskSite extends BaseSite {
   }
 
   saveTaskLog() {
-    if (this.state.history._id) {
-      TaskLogStore.update({ _id: this.state.history._id }, this.state.history).then(() => {
+    if (this.state.history.id) {
+      db.stores.taskLog.update({ id: this.state.history.id }, this.state.history).then(() => {
         this.state.timer.setCurrentTimerHistory(this.state.history);
       });
     } else {
-      TaskLogStore.create(this.state.history).then((doc) => {
+      db.stores.taskLog.create(this.state.history).then((doc) => {
         this.state.history = doc;
         this.state.timer.setCurrentTimerHistory(this.state.history);
       });
@@ -305,7 +303,7 @@ class TaskSite extends BaseSite {
     this.state.task.modified = new Date();
     this.state.task.completed = true;
 
-    TaskStore.update(this.state.task).then(() => {
+    db.stores.task.update(this.state.task).then(() => {
       this.context.router.push('/');
     });
   }

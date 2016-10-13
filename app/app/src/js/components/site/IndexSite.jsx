@@ -2,11 +2,11 @@ import $ from 'jquery';
 import React from 'react';
 import { Link } from 'react-router';
 import { CurrentLanguage } from '../../config/lang';
+import db from '../../stores/StoreContext';
 import MenuBar from './common/MenuBar';
 import StatusChart from './index/StatusChart';
 import BaseSite from './BaseSite';
-
-import { SettingStore } from '../../stores/SettingStore';
+import { Toasty } from '../../helpers/Toasty';
 
 export default class IndexSite extends BaseSite {
   static defaultProps = {

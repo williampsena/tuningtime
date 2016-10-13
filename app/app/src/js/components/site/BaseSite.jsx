@@ -3,14 +3,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 import MenuBar from './common/MenuBar';
-import { SettingStore } from '../../stores/SettingStore';
+import db from '../../stores/StoreContext';
 
 const shell = require('electron').shell;
 
 export default class BaseSite extends React.Component {
   constructor(props) {
     super(props);
-    this.setting = SettingStore.current();
+    this.setting = db.stores.setting.current();
   }
   
   componentDidMount(){

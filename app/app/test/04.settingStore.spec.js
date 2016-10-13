@@ -1,6 +1,6 @@
-var chalk = require('chalk');
-import { SettingStore } from '../built-tests/js/stores/SettingStore.es6.js';
-import SettingModel from '../built-tests/js/models/Setting.es6.js';
+import chalk from 'chalk';
+import db from '../built-tests/js/stores/StoreContext';
+import SettingModel from '../built-tests/js/models/Setting';
 import fs from 'fs';
 
 //
@@ -8,20 +8,22 @@ import fs from 'fs';
 //
 describe('T4 - SettingStore', () => {
   before(done => {
-    SettingStore.removeAll().then(() => {
+    db.stores.setting.removeAll().then(setting => {
       done();
-    });
+    }).catch(err => {
+      throw err;
+    })
   });
 
   ///
   /// Inserting a setting
   ///
   it('T4.01 - As a user I want to create a setting', (done) => {
-    SettingStore.create(new SettingModel({
-      _id: 1,
+    db.stores.setting.create(new SettingModel({
+      id: 'config',
       interval: 25,
       wait: 5
-    })).then((d) => {
+    })).then(() => {
       done();
     }).catch(err => {
       throw err;
@@ -32,10 +34,10 @@ describe('T4 - SettingStore', () => {
   /// Updating a setting
   ///
   it('T4.02 - As a user I want to update a setting', (done) => {
-    SettingStore.update({
-      _id: 1,
+    db.stores.setting.update({
+      id: 'config',
       wait: 10
-    }).then((d) => {
+    }).then(d => {
       done();
     }).catch(err => {
       throw err;
@@ -46,7 +48,15 @@ describe('T4 - SettingStore', () => {
   /// Get current setting
   ///
   it('T4.03 - As a user I want to get the current setting', (done) => {
-    SettingStore.current().then((model) => {
+    db.stores.setting.current();
+    done();
+  }).timeout(5000);
+
+  ///
+  /// Preload a setting
+  ///
+  it('T4.04 - As a user I want to preload a setting', (done) => {
+    db.stores.setting.preload().then(setting => {
       done();
     }).catch(err => {
       throw err;
@@ -56,10 +66,8 @@ describe('T4 - SettingStore', () => {
   ///
   /// Removing a setting
   ///
-  it('T4.04 - As a user I want to remove a setting', (done) => {
-    SettingStore.remove({
-      _id: 1
-    }).then((d) => {
+  it('T4.05 - As a user I want to remove a setting', (done) => {
+    db.stores.setting.remove('config').then(d => {
       done();
     }).catch(err => {
       throw err;

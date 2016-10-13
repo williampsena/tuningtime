@@ -1,10 +1,16 @@
 'use strict';
 
-var _SettingStoreEs = require('../built-tests/js/stores/SettingStore.es6.js');
+var _chalk = require('chalk');
 
-var _SettingEs = require('../built-tests/js/models/Setting.es6.js');
+var _chalk2 = _interopRequireDefault(_chalk);
 
-var _SettingEs2 = _interopRequireDefault(_SettingEs);
+var _StoreContext = require('../built-tests/js/stores/StoreContext');
+
+var _StoreContext2 = _interopRequireDefault(_StoreContext);
+
+var _Setting = require('../built-tests/js/models/Setting');
+
+var _Setting2 = _interopRequireDefault(_Setting);
 
 var _fs = require('fs');
 
@@ -12,16 +18,15 @@ var _fs2 = _interopRequireDefault(_fs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var chalk = require('chalk');
-
-
 //
 // Setting store tests
 //
 describe('T4 - SettingStore', function () {
   before(function (done) {
-    _SettingStoreEs.SettingStore.removeAll().then(function () {
+    _StoreContext2.default.stores.setting.removeAll().then(function (setting) {
       done();
+    }).catch(function (err) {
+      throw err;
     });
   });
 
@@ -29,11 +34,11 @@ describe('T4 - SettingStore', function () {
   /// Inserting a setting
   ///
   it('T4.01 - As a user I want to create a setting', function (done) {
-    _SettingStoreEs.SettingStore.create(new _SettingEs2.default({
-      _id: 1,
+    _StoreContext2.default.stores.setting.create(new _Setting2.default({
+      id: 'config',
       interval: 25,
       wait: 5
-    })).then(function (d) {
+    })).then(function () {
       done();
     }).catch(function (err) {
       throw err;
@@ -44,8 +49,8 @@ describe('T4 - SettingStore', function () {
   /// Updating a setting
   ///
   it('T4.02 - As a user I want to update a setting', function (done) {
-    _SettingStoreEs.SettingStore.update({
-      _id: 1,
+    _StoreContext2.default.stores.setting.update({
+      id: 'config',
       wait: 10
     }).then(function (d) {
       done();
@@ -58,8 +63,15 @@ describe('T4 - SettingStore', function () {
   /// Get current setting
   ///
   it('T4.03 - As a user I want to get the current setting', function (done) {
-    _SettingStoreEs.SettingStore.get().then(function (model) {
-      console.log(model);
+    _StoreContext2.default.stores.setting.current();
+    done();
+  }).timeout(5000);
+
+  ///
+  /// Preload a setting
+  ///
+  it('T4.04 - As a user I want to preload a setting', function (done) {
+    _StoreContext2.default.stores.setting.preload().then(function (setting) {
       done();
     }).catch(function (err) {
       throw err;
@@ -69,13 +81,12 @@ describe('T4 - SettingStore', function () {
   ///
   /// Removing a setting
   ///
-  it('T4.04 - As a user I want to remove a setting', function (done) {
-    _SettingStoreEs.SettingStore.remove({
-      _id: 1
-    }).then(function (d) {
+  it('T4.05 - As a user I want to remove a setting', function (done) {
+    _StoreContext2.default.stores.setting.remove('config').then(function (d) {
       done();
     }).catch(function (err) {
       throw err;
     });
   }).timeout(5000);
 });
+//# sourceMappingURL=04.settingStore.spec.js.map

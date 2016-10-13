@@ -222,8 +222,20 @@ gulp.task('debug:electron', ['build'], shell.task([
 gulp.task('test:build', ['test:clean'], () => {
   return gulp.src(["./src/**/*.js", "./src/**/*.es6", "./test/**/*.js"])
     .pipe(babel())
+    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.write('./'))
     .pipe(debug())
-    .pipe(gulp.dest("./built-tests"));
+    .pipe(gulp.dest("./built-tests"))
+});
+
+gulp.task('test:build-js', ['test:build'], () => {
+  return gulp
+        .src("built-tests/**/*.es6.js")
+        .pipe(rename(function(path) {
+          path.basename = path.basename.replace('.es6', '');
+          path.extname = '.js';
+        }))
+        .pipe(gulp.dest('built-tests'));
 });
 
 gulp.task('test:clean', [], () => {
@@ -235,21 +247,18 @@ gulp.task('test', () => {
   runSequence(['test:mocha']);
 });
 
-gulp.task('test:mocha', ['test:build'], () => { 
-  var args = ['./built-tests'];
+gulp.task('test:mocha', ['test:build', 'test:build-js'], () => { 
+  var args = ['./built-tests', '--renderer'];
   
   if(argv.testcase){
-    args.push(`-g ${argv.testcase}`);
+    args.push(`--fgrep=${argv.testcase}`);
   }
-  
+
   return gulp.src('./built-tests').pipe(shell([
+
     `electron-mocha ${args.join(' ')}`
   ]));
 });
-
-gulp.task('package:test', shell.task([
-  'build --linux --x64 --dir'
-]));
 
 gulp.task('package', (callback) => {
     runSequence(
@@ -263,6 +272,7 @@ gulp.task('package:linux', [], (callback) => {
     runSequence(
     'package:linux-x64',
     'package:linux-ia32',
+    'package:linux-appImage',
     callback
     );
 });
@@ -273,4 +283,9 @@ gulp.task('package:linux-x64', [], shell.task([
 
 gulp.task('package:linux-ia32', [], shell.task([
   'build --linux deb tar.xz --ia32'
+]));
+
+
+gulp.task('package:linux-appImage', [], shell.task([
+  'build --linux tar.xz AppImage'
 ]));

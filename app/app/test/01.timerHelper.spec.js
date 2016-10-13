@@ -1,5 +1,7 @@
 'use strict';
-var chalk = require('chalk');
+import chalk from 'chalk';
+import fs from 'fs';
+
 const timeInterval = 1000; // 1000 mili
 const maxInterval = 4; // 4 sec
 const waitInterval = 2; // 2 sec

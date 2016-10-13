@@ -4,7 +4,7 @@ import moment from 'moment';
 import reactD3 from 'react-d3';
 import d3 from 'd3';
 import { CurrentLanguage } from '../../../config/lang';
-import { TaskLogStore } from '../../../stores/TaskLogStore';
+import db from '../../../stores/StoreContext';
 
 var BarChart = reactD3.BarChart;
 
@@ -32,7 +32,7 @@ class StatusChart extends React.Component {
     var start = moment().startOf('day').subtract(3, 'month');
     var end = moment();
 
-    TaskLogStore.filterByDate(start.toDate(), end.toDate()).then(logs => {
+    db.stores.taskLog.filterByDate(start.toDate(), end.toDate()).then(logs => {
       this.state.logs = logs;
 
       var data = {

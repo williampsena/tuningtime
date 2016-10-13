@@ -1,16 +1,20 @@
 'use strict';
 
-var _TaskStoreEs = require('../built-tests/js/stores/TaskStore.es6.js');
+var _chalk = require('chalk');
 
-var _TaskLogStoreEs = require('../built-tests/js/stores/TaskLogStore.es6.js');
+var _chalk2 = _interopRequireDefault(_chalk);
 
-var _TaskEs = require('../built-tests/js/models/Task.es6.js');
+var _StoreContext = require('../built-tests/js/stores/StoreContext');
 
-var _TaskEs2 = _interopRequireDefault(_TaskEs);
+var _StoreContext2 = _interopRequireDefault(_StoreContext);
 
-var _TaskLogEs = require('../built-tests/js/models/TaskLog.es6.js');
+var _Task = require('../built-tests/js/models/Task');
 
-var _TaskLogEs2 = _interopRequireDefault(_TaskLogEs);
+var _Task2 = _interopRequireDefault(_Task);
+
+var _TaskLog = require('../built-tests/js/models/TaskLog');
+
+var _TaskLog2 = _interopRequireDefault(_TaskLog);
 
 var _fs = require('fs');
 
@@ -22,17 +26,29 @@ var _path2 = _interopRequireDefault(_path);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var chalk = require('chalk');
+var taskCreated, taskLogCreated;
 
+function getTaskModel(id, name) {
+  return new _Task2.default({
+    _id: id,
+    name: name
+  });
+}
 
-var taskCreated = undefined;
+function getTaskLogModel(id, name, taskCreated) {
+  return new _TaskLog2.default({
+    _id: id,
+    task: taskCreated,
+    description: name
+  });
+}
 
 //
 // Timer process
 //
 describe('T3 - TaskStoreHistory', function () {
   before(function (done) {
-    _TaskLogStoreEs.TaskLogStore.removeAll().then(function () {
+    _StoreContext2.default.stores.taskLog.removeAll().then(function () {
       done();
     });
   });
@@ -41,14 +57,9 @@ describe('T3 - TaskStoreHistory', function () {
   /// Preparing task before to add history
   ///
   it('T3.01 - As a user I want to create a task before to create history', function (done) {
-    _TaskStoreEs.TaskStore.create(new _TaskEs2.default({
-      _id: 2,
-      name: 'Playing video game'
-    })).then(function (d) {
+    _StoreContext2.default.stores.taskLog.create(getTaskModel(1, 'Playing video games')).then(function (d) {
       taskCreated = d;
       done();
-    }).catch(function (err) {
-      throw err;
     });
   }).timeout(5000);
 
@@ -56,25 +67,17 @@ describe('T3 - TaskStoreHistory', function () {
   /// Insert task history
   ///
   it('T3.02 - As a user I want to create task history', function (done) {
-    _TaskLogStoreEs.TaskLogStore.create(new _TaskLogEs2.default({
-      _id: 1,
-      task: taskCreated,
-      description: 'Firt level'
-    })).then(function (d) {
+    _StoreContext2.default.stores.taskLog.create(getTaskLogModel(1, 'First level', taskCreated)).then(function (d) {
+      taskLogCreated = d;
       done();
-    }).catch(function (err) {
-      throw err;
     });
   }).timeout(5000);
 
   ///
   /// Update task history
   ///
-  it('T4.03 - As a user I want to update task history', function (done) {
-    _TaskLogStoreEs.TaskLogStore.update(new _TaskEs2.default({
-      _id: 1,
-      description: 'Firt level :)'
-    })).then(function (d) {
+  it('T3.03 - As a user I want to update task history', function (done) {
+    _StoreContext2.default.stores.taskLog.update(getTaskLogModel(taskLogCreated.id, 'First level :)', taskCreated)).then(function (d) {
       done();
     }).catch(function (err) {
       throw err;
@@ -84,27 +87,19 @@ describe('T3 - TaskStoreHistory', function () {
   ///
   /// Remove task history
   ///
-  it('T5.04 - As a user I want to remove task history', function (done) {
-    _TaskLogStoreEs.TaskLogStore.remove({
-      _id: 1
-    }).then(function (d) {
+  it('T3.04 - As a user I want to remove task history', function (done) {
+    _StoreContext2.default.stores.taskLog.remove(taskLogCreated.id).then(function (d) {
       done();
-    }).catch(function (err) {
-      throw err;
     });
   }).timeout(5000);
 
   ///
   /// Update task model in task history
   ///
-  it('T5.05 - As a user I want to update task model in task history', function (done) {
-    _TaskLogStoreEs.TaskLogStore.updateTask(new _TaskEs2.default({
-      _id: 2,
-      name: 'Playing video games'
-    })).then(function (d) {
+  it('T3.05 - As a user I want to update task model in task history', function (done) {
+    _StoreContext2.default.stores.taskLog.updateTask(getTaskModel(taskCreated.id, 'Playing video games')).then(function (d) {
       done();
-    }).catch(function (err) {
-      throw err;
     });
   }).timeout(5000);
 });
+//# sourceMappingURL=03.taskHistoryStore.spec.js.map

@@ -64,7 +64,7 @@ class TaskList extends React.Component {
                 columnMetadata={this.state.columns}
                 columns={["name"]}
                 resultsPerPage={5}
-                uniqueIdentifier="_id"
+                uniqueIdentifier="id"
                 useGriddleStyles={false}
                 noDataMessage={CurrentLanguage.grid.empty}
                 onRowClick={this.selectTask} />

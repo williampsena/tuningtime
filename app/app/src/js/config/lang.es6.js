@@ -14,6 +14,10 @@ export var Languages = {
         titleY: "Min"
       }
     },
+    welcome: {
+      title: "Welcome",
+      loading: "Please wait while the app starts up"
+    },
     setting: {
       title: "Settings",
       buttons: {
@@ -96,6 +100,10 @@ export var Languages = {
     }
   },
   ptBR: {
+    welcome: {
+      title: "Bem vindo",
+      loading: "Espere um pouco enquanto a aplicação inicia"
+    },
     index: {
       title: "Vamos começar ?",
       emptyTaskStatus: "Nenhuma atividade encontrada",

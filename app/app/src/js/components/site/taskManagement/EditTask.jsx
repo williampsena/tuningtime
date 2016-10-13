@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
 import { CurrentLanguage } from '../../../config/lang';
-import { TaskStore } from '../../../stores/TaskStore';
-import { TaskLogStore } from '../../../stores/TaskLogStore';
+import db from '../../../stores/StoreContext';
 
 class EditTask extends React.Component {
   constructor(props, context) {
@@ -62,7 +61,7 @@ class EditTask extends React.Component {
     this.state.task.name = this.state.fields.taskName.value;
     this.setState(this.state);
 
-    TaskStore.update(this.state.task).then(TaskLogStore.updateTask(this.state.task)).then(() => {
+    db.stores.task.update(this.state.task).then(db.stores.taskLog.updateTask(this.state.task)).then(() => {
       alert(CurrentLanguage.taskManagement.messages.taskUpdated);
       this.closeEdit();
       this.updateGrid();

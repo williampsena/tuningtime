@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
 import { CurrentLanguage } from '../../../config/lang';
-import { TaskStore } from '../../../stores/TaskStore';
+import db from '../../../stores/StoreContext';
 import EditTask from './EditTask';
 import Griddle from 'griddle-react';
 
@@ -67,7 +67,7 @@ class TaskList extends React.Component {
   }
 
   searchTasks() {
-    return TaskStore.findByContent(this.state.searchTask, !this.state.onlyOpenedTask);
+    return db.stores.task.findByContent(this.state.searchTask, !this.state.onlyOpenedTask);
   }
 
   delete(task) {
@@ -75,7 +75,7 @@ class TaskList extends React.Component {
     var deleteTask = confirm(message);
 
     if (deleteTask === true) {
-      TaskStore.remove({ _id: task._id }).then(() => {
+      db.stores.task.remove({ id: task.id }).then(() => {
         this.bindSearchTasks();
       });
     }

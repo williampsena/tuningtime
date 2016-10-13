@@ -1,27 +1,25 @@
-var chalk = require('chalk');
-import { TaskStore } from '../built-tests/js/stores/TaskStore.es6.js';
+import chalk from 'chalk';
+import db from '../built-tests/js/stores/StoreContext';
 import TaskModel from '../built-tests/js/models/Task.es6.js';
 import fs from 'fs';
+
+function getModel() {
+  return new TaskModel({
+    id: 1,
+    name: 'Teste',
+    performed: 0
+  });
+};
 
 //
 // Task store tests
 //
 describe('T2 - TaskStore', () => {
-  before(done => {
-    TaskStore.removeAll().then(() => {
-      done();
-    });
-  });
-
   ///
   /// Inserting a task
   ///
-  it('T2.01 - As a user I want to create a task', (done) => {
-    TaskStore.create(new TaskModel({
-      _id: 1,
-      name: 'Teste',
-      performed: 0
-    })).then((d) => {
+  it('T2.01 - As a user I want to create a task', done => {
+    db.stores.task.create(getModel()).then((d) => {
       done();
     }).catch(err => {
       throw err;
@@ -31,11 +29,12 @@ describe('T2 - TaskStore', () => {
   ///
   /// Updating a task
   ///
-  it('T2.02 - As a user I want to update the task performance', (done) => {
-    TaskStore.update({
-      _id: 1,
-      performed: 100
-    }).then((d) => {
+  it('T2.02 - As a user I want to update the task performance', done => {
+    var model = getModel();
+
+    model.name = 'Testing';
+
+    db.stores.task.update(model).then((d) => {
       done();
     }).catch(err => {
       throw err;
@@ -45,26 +44,21 @@ describe('T2 - TaskStore', () => {
   ///
   /// Finding task by name
   ///
-  it('T2.03 - As a user I want to find a task by content', (done) => {
-    TaskStore.findByContent('tes').then((d) => {
-      if(d.length === 0){
+  it('T2.03 - As a user I want to find a task by content', done => {
+    db.stores.task.findByContent('testin').then(tasks => {
+      if(tasks.length === 0){
         throw new Error('Task not found!'); 
       }
-      
+
       done();
-    }).catch(err => {
-      console.log(chalk.red(err));
-      throw err;
     });
   }).timeout(5000);
   
   ///
   /// Removing a task
   ///
-  it('T2.04 - As a user I want to remove task', (done) => {
-    TaskStore.remove({
-      _id: 1
-    }).then((d) => {
+  it('T2.04 - As a user I want to remove task', done => {
+    db.stores.task.remove(1).then(function() {
       done();
     }).catch(err => {
       throw err;

@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
 import { CurrentLanguage } from '../../../config/lang';
-import { TaskStore } from '../../../stores/TaskStore';
-import { TaskLogStore } from '../../../stores/TaskLogStore';
+import db from '../../../stores/StoreContext';
 import TaskModel from '../../../models/Task';
 
 class CreateTask extends React.Component {
@@ -64,7 +63,7 @@ class CreateTask extends React.Component {
   }
 
   saveTask(e) {
-    TaskStore.create(new TaskModel(this.state.task)).then(task => {
+    db.stores.task.create(new TaskModel(this.state.task)).then(task => {
       this.hide();
       this.redirect(task);
     });

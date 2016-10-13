@@ -2,8 +2,7 @@ import $ from 'jquery';
 import React from 'react';
 import { Link } from 'react-router';
 import { CurrentLanguage } from '../../config/lang';
-import { TaskStore } from '../../stores/TaskStore';
-import { TaskLogStore } from '../../stores/TaskLogStore';
+import db from '../../stores/StoreContext';
 import BaseSite from './BaseSite';
 import MenuBar from './common/MenuBar';
 import fs from 'fs';
@@ -69,7 +68,7 @@ class ExportSite extends BaseSite {
       tasks: logsModels.map(m => {
         var model = {
           "@": {
-            id: m._id,
+            id: m.id,
             completed: m.completed,
             modified: m.modified,
             name: m.name,
@@ -98,7 +97,7 @@ class ExportSite extends BaseSite {
     var model = {
       tasks: logsModels.map(m => {
         return {
-          id: m._id,
+          id: m.id,
           completed: m.completed,
           modified: m.modified,
           name: m.name,
@@ -127,7 +126,7 @@ class ExportSite extends BaseSite {
         // Prepare text content file
         //
         textModels += [
-          String(m._id),
+          String(m.id),
           String(m.completed),
           String(m.modified),
           m.name,
@@ -166,11 +165,11 @@ class ExportSite extends BaseSite {
   }
 
   getModels() {
-    return TaskLogStore.filterByDate(new Date(this.state.startFilter), new Date(this.state.endFilter)).then(logs => {
+    return db.stores.taskLog.filterByDate(new Date(this.state.startFilter), new Date(this.state.endFilter)).then(logs => {
       var tasks = new Map();
 
       logs.forEach(log => {
-        let task = tasks.get(log.task._id);
+        let task = tasks.get(log.task.id);
         let newTaskLog = { timer: log.timer, date: log.createAt };
 
         if (!task) {
@@ -182,7 +181,7 @@ class ExportSite extends BaseSite {
           task.timer += log.timer;
         }
 
-        tasks.set(log.task._id, task);
+        tasks.set(log.task.id, task);
       });
 
       var models = [];

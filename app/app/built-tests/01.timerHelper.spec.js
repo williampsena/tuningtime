@@ -2,9 +2,18 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _chalk = require('chalk');
+
+var _chalk2 = _interopRequireDefault(_chalk);
+
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var chalk = require('chalk');
 var timeInterval = 1000; // 1000 mili
 var maxInterval = 4; // 4 sec
 var waitInterval = 2; // 2 sec
@@ -29,7 +38,7 @@ var ModelTimer = function () {
     value: function elapsed(done, _elapsed) {
       done = done || function () {};
 
-      console.log(chalk.green('Elapsed [counter = ' + this.counter + ']'));
+      console.log(_chalk2.default.green('Elapsed [counter = ' + this.counter + ']'));
 
       if (_elapsed) {
         _elapsed(this);
@@ -56,7 +65,7 @@ var ModelTimer = function () {
   }, {
     key: 'stop',
     value: function stop() {
-      console.log(chalk.red('Stopped'));
+      console.log(_chalk2.default.red('Stopped'));
 
       this.status = TIMERSTATUS.STOPPED;
       clearInterval(this.process);
@@ -65,7 +74,7 @@ var ModelTimer = function () {
   }, {
     key: 'wait',
     value: function wait(args) {
-      console.log(chalk.yellow('Waiting [counter = ' + this.counter + ']'));
+      console.log(_chalk2.default.yellow('Waiting [counter = ' + this.counter + ']'));
 
       args = args || {};
       args.done = args.done || function () {};
@@ -124,3 +133,4 @@ describe('T1 - Timer helper', function () {
     });
   }).timeout(10000);
 });
+//# sourceMappingURL=01.timerHelper.spec.js.map

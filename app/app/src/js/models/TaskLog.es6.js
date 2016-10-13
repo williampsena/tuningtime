@@ -4,7 +4,7 @@ export default class TaskLogModel {
   constructor(args) {
     args = args || {};
 
-    this._id = undefined;
+    this.id = undefined;
     this.task = undefined;
     this.timer = 0;
     this.createAt = new Date();

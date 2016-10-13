@@ -20,6 +20,30 @@ td {
   display: table-cell;
   width: 100%;
 }
+.welcome {
+  background-color: #1F3A93;
+  background-repeat: no-repeat;
+  background-size: 32em;
+  background-position: 50% 0;
+}
+.welcome .main-container .welcome-loading {
+  opacity: 0.9;
+}
+.welcome .main-container .logo {
+  width: 20em;
+}
+.welcome .main-container .welcome-header {
+  font-size: 1.5em;
+  opacity: 0.9;
+}
+.welcome .main-container p {
+  padding: 1em 0 0 0;
+  font-size: 1.2em;
+}
+.welcome .main-container .grid {
+  padding: 5em 0 0 0;
+  height: 100%;
+}
 .home .main-container {
   background-color: #455A64;
 }
@@ -61,41 +85,38 @@ td {
 .task .task-progress {
   padding: 3em 0 0 0;
 }
-body.toasty {
+.toasty {
   -webkit-app-region: no-drag;
   -webkit-user-select: none;
   -webkit-app-region: drag;
   overflow: hidden;
 }
-body.toasty .main-container {
-  padding: 0;
+.toasty .main-container {
   margin: 0;
-  width: 70%;
-  height: 70%;
+  padding: 0;
+  display: block;
 }
-body.toasty.start {
-  margin: 5% 0 5% 0;
+.toasty.start {
   background-color: #4a148c;
+  display: inline;
 }
-body.toasty.start img {
-  width: 80%;
-  height: 80%;
-  -webkit-animation-duration: 1s;
-  -webkit-animation-delay: 0.2s;
-  -webkit-animation-iteration-count: 1;
-  -webkit-filter: blur(0px);
+.toasty.start img {
+  padding: 10% 0 0 0 !important;
+  animation-duration: 1s;
+  animation-delay: 0.2s;
+  animation-iteration-count: 1;
+  filter: blur(0px);
 }
-body.toasty.wait {
-  margin: 22% 0 0 0;
+.toasty.wait {
   background: #795548;
+  display: inline;
 }
-body.toasty.wait img {
-  width: 50%;
-  height: 50%;
-  -webkit-animation-duration: 3s;
-  -webkit-animation-delay: 0.2s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-filter: blur(0px);
+.toasty.wait img {
+  padding: 10% 0 0 0 !important;
+  animation-duration: 3s;
+  animation-delay: 0.2s;
+  animation-iteration-count: infinite;
+  filter: blur(0px);
 }
 .export .main-container {
   background-color: #B0BEC5;

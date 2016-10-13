@@ -11,7 +11,7 @@ class ToastySite extends BaseSite {
     super(props);
     this.context = context;
     this.state = {
-      type: this.props.location.query.imageType
+      type: this.props.location.query.imageType || 'start'
     };
   }
 
@@ -31,20 +31,16 @@ class ToastySite extends BaseSite {
     
     if(this.state.type === "start"){
       template = (
-        <div className="row">
-          <img src="images/start.png" className="animated slideInRight" />
-        </div>
+          <img className="ui centered fluid image animated slideInRight" src="images/start.png" />
       );
     } else {
       template = (
-        <div className="row">
-          <img src="images/wait.png" className="animated bounce" />
-        </div>
+          <img className="ui centered fluid image animated bounce" src="images/wait.png" />
       );
     }
       
     return (
-      <div className="ui center aligned grid">
+      <div className="ui basic segment">
         {template}
       </div>
     );

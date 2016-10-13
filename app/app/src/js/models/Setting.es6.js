@@ -4,9 +4,9 @@ export default class SettingModel {
   constructor(args) {
     args = args || {};
 
-    this._id = undefined;
-    this.interval = 0;
-    this.wait = 0;
+    this.id = 'config';
+    this.interval = 20;
+    this.wait = 5;
     this.createAt = new Date();
     this.modified = null;
 
