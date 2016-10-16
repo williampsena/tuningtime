@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import chalk from 'chalk';
 import db from '../built-tests/js/stores/StoreContext';
 import TaskModel from '../built-tests/js/models/Task.es6.js';

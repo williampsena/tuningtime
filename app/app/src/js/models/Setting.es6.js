@@ -12,4 +12,14 @@ export default class SettingModel {
 
     extend(this, args);
   }
+
+  static mapToClass(db) {
+    db.setting.mapToClass(SettingModel, {
+      id: Number,
+      interval: Number,
+      wait: Number,
+      createAt: Date,
+      modified: Date
+    });
+  }
 }

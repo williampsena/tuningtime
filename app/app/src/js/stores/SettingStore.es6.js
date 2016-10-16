@@ -10,18 +10,18 @@ export class SettingStore extends BaseStore {
     super(databases, 'setting');
   }
 
-  get(id){
+  get() {
     return this.first();
   }
 
-  update(model){
-    return super.update(model).then((setting) => {
+  update(model) {
+    return super.update(model).then(() => {
       this.setCurrent(model);
       return model;
     });
   }
 
-  load(){
+  load() {
     return this.get().then((setting) => {
       this.setCurrent(setting);
       return setting;
@@ -30,19 +30,19 @@ export class SettingStore extends BaseStore {
 
   preload() {
     var currentSetting = this.current();
-    
-    if(currentSetting) {
-        return this.load();
+
+    if (currentSetting) {
+      return this.load();
     }
 
     return this.count().then(count => {
-      if(count > 0) {
+      if (count > 0) {
         return this.load();
       }
 
       var currentSetting = new SettingModel();
 
-      return this.create(currentSetting).then(setting => {
+      return this.create(currentSetting).then(() => {
         currentSetting = new SettingModel();
         this.setCurrent(currentSetting);
       });
@@ -50,7 +50,7 @@ export class SettingStore extends BaseStore {
   }
 
   setCurrent(setting) {
-    if(setting){
+    if (setting) {
       SessionLocalHelper.create(SETTING_KEY, setting);
     }
   }

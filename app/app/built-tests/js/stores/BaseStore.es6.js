@@ -79,6 +79,7 @@ var BaseStore = exports.BaseStore = function () {
       return this.db.update(id, model).catch(function (err) {
         throw err;
       }).then(function () {
+        model.id = id;
         return model;
       });
     }

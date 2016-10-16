@@ -1,4 +1,3 @@
-import Q from 'q';
 import { BaseStore } from './BaseStore';
 
 export class TaskLogStore extends BaseStore {
@@ -11,6 +10,8 @@ export class TaskLogStore extends BaseStore {
   }
 
   updateTask(model) {
-    return this.db.filter(x => x.task.id === model.id).modify({task: model});
+    return this.db.where('task.id').equals(model.id).modify(x => {
+      x.task = model;
+    });
   }
 }

@@ -1,5 +1,4 @@
 import { SessionHelper, SessionLocalHelper } from './Session';
-import TaskModel from '../models/Task';
 import TaskLogModel from '../models/TaskLog';
 
 export const TIMER_SETTINGS = {
@@ -184,8 +183,8 @@ export class Timer {
     this.listenAudio('wait', 1);
   }
 
-  listenAudio(audio, vol) {
-    var audio = new Audio(`audio/${audio}.mp3`);
+  listenAudio(audioFile, vol) {
+    var audio = new Audio(`audio/${audioFile}.mp3`);
     audio.volume = vol || 0.2;
     audio.currentTime = 0;
     audio.play();

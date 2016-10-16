@@ -21,6 +21,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 // Setting store tests
 //
+/* eslint-disable */
+
 describe('T4 - SettingStore', function () {
   before(function (done) {
     _StoreContext2.default.stores.setting.removeAll().then(function (setting) {

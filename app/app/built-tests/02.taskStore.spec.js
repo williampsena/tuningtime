@@ -18,6 +18,8 @@ var _fs2 = _interopRequireDefault(_fs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/* eslint-disable */
+
 function getModel() {
   return new _TaskEs2.default({
     id: 1,

@@ -1,12 +1,10 @@
-import Q from 'q';
-
 export class BaseStore {
   constructor(db, dbContextName) {
     this.dbContext = db;
     this.db = db[dbContextName];
   }
 
-  transaction(){
+  transaction() {
     return this.dbContext.transaction.apply(this, arguments);
   }
 
@@ -36,12 +34,12 @@ export class BaseStore {
 
   create(model) {
     delete model.id;
-    
+
     return this.db.add(model).catch(err => {
       throw err;
     }).then(() => {
       return model;
-    })
+    });
   }
 
   update(model) {

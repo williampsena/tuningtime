@@ -7,6 +7,8 @@ exports.SettingStore = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 var _q = require('q');
 
 var _q2 = _interopRequireDefault(_q);
@@ -44,19 +46,29 @@ var SettingStore = exports.SettingStore = function (_BaseStore) {
       return this.first();
     }
   }, {
-    key: 'load',
-    value: function load() {
+    key: 'update',
+    value: function update(model) {
       var _this2 = this;
 
+      return _get(SettingStore.prototype.__proto__ || Object.getPrototypeOf(SettingStore.prototype), 'update', this).call(this, model).then(function (setting) {
+        _this2.setCurrent(model);
+        return model;
+      });
+    }
+  }, {
+    key: 'load',
+    value: function load() {
+      var _this3 = this;
+
       return this.get().then(function (setting) {
-        _this2.setCurrent(setting);
+        _this3.setCurrent(setting);
         return setting;
       });
     }
   }, {
     key: 'preload',
     value: function preload() {
-      var _this3 = this;
+      var _this4 = this;
 
       var currentSetting = this.current();
 
@@ -66,14 +78,14 @@ var SettingStore = exports.SettingStore = function (_BaseStore) {
 
       return this.count().then(function (count) {
         if (count > 0) {
-          return _this3.load();
+          return _this4.load();
         }
 
         var currentSetting = new _Setting2.default();
 
-        return _this3.create(currentSetting).then(function (setting) {
+        return _this4.create(currentSetting).then(function (setting) {
           currentSetting = new _Setting2.default();
-          _this3.setCurrent(currentSetting);
+          _this4.setCurrent(currentSetting);
         });
       });
     }

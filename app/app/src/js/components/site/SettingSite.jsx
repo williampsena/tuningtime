@@ -7,6 +7,7 @@ import db from '../../stores/StoreContext';
 import SettingModel from '../../models/Setting';
 import MenuBar from './common/MenuBar';
 import BaseSite from './BaseSite';
+import { Timer } from '../../helpers/Timer';
 
 const remote = require('electron').remote;
 
@@ -74,6 +75,10 @@ export default class SettingSite extends BaseSite {
       db.clearDatabase().then(() => {
         this.loadSetting();
         alert(CurrentLanguage.setting.message.clearDatabase);
+
+        let timer = new Timer();
+        timer.removeCurrentTimer();
+        timer.removeCurrentTimerHistory();
         remote.getCurrentWindow().reload();
       });
     }

@@ -74,7 +74,7 @@ class TaskSite extends BaseSite {
           this.state.history = undefined;
           this.state.timer = new Timer(this.setting.interval * 60, TIMER_SETTINGS.interval);
           this.state.timer.setCurrentTimer();
-          this.state.timer.setCurrentTimerHistory(this.state.history);
+          this.state.timer.removeCurrentTimerHistory();
         }
       }
     }
@@ -150,30 +150,33 @@ class TaskSite extends BaseSite {
     if (!isPaused && !isRecoverStarted) {
       timerCounter = this.setting.interval * 60;
       this.state.timer.initialize(timerCounter);
-      this.prepareTaskLog();
     } else {
       timerCounter = this.state.timer.counter;
     }
 
+    this.prepareTaskLog();
+
     this.state.timer.start({
       counter: timerCounter,
       done: () => {
-        this.state.timer.removeCurrentTimer();
-        this.state.timer.removeCurrentTimerHistory(this.state.history);
         this.state.timer.incrementCycleCounter();
         this.startWait();
         this.updateState({ timer: this.state.timer });
-        this.saveTaskLog();
-        this.state.history = undefined;
+
+        this.saveTaskLog().then(() => {
+          this.state.history = undefined;
+          this.state.timer.removeCurrentTimer();
+          this.state.timer.removeCurrentTimerHistory();
+        });
       },
       elapsed: (m) => {
-        this.updateState({ timer: this.state.timer });
-        this.state.timer.setCurrentTimer();
         this.prepareTaskLog();
+        this.updateState({ timer: this.state.timer, history: this.state.history });
+        this.state.timer.setCurrentTimer();
       }
     });
 
-    this.updateState({ timer: this.state.timer });
+    this.updateState({ timer: this.state.timer, history: this.state.history });
 
     if (!isPaused) {
       WindowHelper.minimize(2);
@@ -218,13 +221,16 @@ class TaskSite extends BaseSite {
 
   stopTimer() {
     if (this.state.timer.status === TIMERSTATUS.STARTED) {
-      this.saveTaskLog();
-      this.state.timer.stop();
-      this.state.history = undefined;
-      this.updateState({ timer: this.state.timer });
-      NotifyHelper.notifyStopped();
-      this.showCloseTaskModal();
+      this.saveTaskLog().then(() => {
+        this.state.timer.stop();
+        this.state.history = undefined;
+        this.state.timer.removeCurrentTimerHistory();
+        this.updateState({ timer: this.state.timer });
+        NotifyHelper.notifyStopped();
+        this.showCloseTaskModal();
+      });
     } else {
+      this.showCloseTaskModal();
       this.context.router.push('/');
     }
   }
@@ -232,8 +238,9 @@ class TaskSite extends BaseSite {
   pauseTimer() {
     if (this.state.timer.status === TIMERSTATUS.STARTED) {
       this.state.timer.pause();
-      this.saveTaskLog();
-      this.updateState({ timer: this.state.timer });
+      this.saveTaskLog().then(() => {
+        this.updateState({ timer: this.state.timer });
+      });
     }
   }
 
@@ -275,24 +282,19 @@ class TaskSite extends BaseSite {
   }
 
   prepareTaskLog() {
-    if (!this.state.history) {
-      this.state.history = new TaskLogModel({
-        task: this.state.task,
-        timer: this.state.timer.counterValue
-      });
-    } else {
-      this.state.history.timer = this.state.timer.counterValue;
-      this.state.history.modified = new Date();
-    }
+    this.state.history = this.state.history || new TaskLogModel();
+    this.state.history.task = this.state.task;
+    this.state.history.timer = this.state.timer.counterValue;
+    this.state.history.modified = new Date();
   }
 
   saveTaskLog() {
     if (this.state.history.id) {
-      db.stores.taskLog.update({ id: this.state.history.id }, this.state.history).then(() => {
+      return db.stores.taskLog.update(this.state.history).then(() => {
         this.state.timer.setCurrentTimerHistory(this.state.history);
       });
     } else {
-      db.stores.taskLog.create(this.state.history).then((doc) => {
+      return db.stores.taskLog.create(this.state.history).then((doc) => {
         this.state.history = doc;
         this.state.timer.setCurrentTimerHistory(this.state.history);
       });

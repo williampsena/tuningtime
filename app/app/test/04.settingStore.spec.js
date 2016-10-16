@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import chalk from 'chalk';
 import db from '../built-tests/js/stores/StoreContext';
 import SettingModel from '../built-tests/js/models/Setting';

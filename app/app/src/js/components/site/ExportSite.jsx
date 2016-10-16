@@ -1,13 +1,15 @@
 import $ from 'jquery';
 import React from 'react';
 import { Link } from 'react-router';
+import fs from 'fs';
+import path from 'path';
+import js2xmlparser from 'js2xmlparser';
+import moment from 'moment';
 import { CurrentLanguage } from '../../config/lang';
 import db from '../../stores/StoreContext';
 import BaseSite from './BaseSite';
 import MenuBar from './common/MenuBar';
-import fs from 'fs';
-import js2xmlparser from 'js2xmlparser';
-import path from 'path';
+
 
 var os = require("os");
 
@@ -35,6 +37,9 @@ class ExportSite extends BaseSite {
   componentDidMount() {
     super.componentDidMount();
 
+    $(this.refs.startFilter).val(moment(this.state.startFilter).format('YYYY-MM-DD'));
+    $(this.refs.endFilter).val(moment(this.state.endFilter).format('YYYY-MM-DD'));
+
     $('.ui.form')
       .form({
         fields: {
@@ -46,8 +51,8 @@ class ExportSite extends BaseSite {
 
   getStoreState() {
     return {
-      startFilter: this.state.startFilter || new Date(),
-      endFilter: this.state.endFilter || new Date(),
+      startFilter: this.state.startFilter || moment().add(-30, 'month').toDate(),
+      endFilter: this.state.endFilter || moment().add(1, 'day').toDate(),
       fileType: this.state.fileType || 'xml'
     };
   }
@@ -165,7 +170,7 @@ class ExportSite extends BaseSite {
   }
 
   getModels() {
-    return db.stores.taskLog.filterByDate(new Date(this.state.startFilter), new Date(this.state.endFilter)).then(logs => {
+    return db.stores.taskLog.filterByDate(this.state.startFilter, this.state.endFilter).then(logs => {
       var tasks = new Map();
 
       logs.forEach(log => {
@@ -245,7 +250,7 @@ class ExportSite extends BaseSite {
               <br />
               <div className="column ten wide">
                 <div className="ui grid centered">
-                  <button type="submit" className="ui circular icon button huge green" onClick={this.exportToFile}>
+                  <button type="button" className="ui circular icon button huge green" onClick={this.exportToFile}>
                     <i className="download icon"></i>
                   </button>
                 </div>
